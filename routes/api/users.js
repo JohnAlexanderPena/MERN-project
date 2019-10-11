@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 // Load User Model
 const User = require('../../models/User')
@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 
         //Hash the password
         bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, null, (err, hash) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
             if(err) throw err;
             newUser.password = hash;
             newUser.save()
@@ -48,5 +48,33 @@ router.post('/register', (req, res) => {
     })
 });
 
+//@route Get api/users/login
+//@desc  Login User / Return JWT Token
+//@acces Public
+
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  //Find user by email
+
+  User.findOne({email})
+  .then(user => {
+    // Check for user
+    if(!user) {
+      return res.status(404).json({email: 'User Email not found'})
+    }
+
+    // Check password
+    bcrypt.compare(password, user.password)
+    .then(isMatch => {
+      if(isMatch){
+        res.json({msg: 'Success'})
+      } else {
+        return res.status(400).json({password: 'Incorrect Password'})
+      }
+    });
+  })
+});
 
 module.exports = router;
