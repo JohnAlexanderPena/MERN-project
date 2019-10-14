@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now()
   },
+  zipcode: {
+    type: Number,
+    required: true
+  }
 });
 
 module.exports = User = mongoose.model('users', UserSchema)
