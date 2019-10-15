@@ -5,6 +5,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport')
+
+//Load input validation
+const validateRegisterInput = require('../../validation/register')
+const validateLoginInput = require('../../validation/login')
+
+
 // Load User Model
 const User = require('../../models/User')
 
@@ -20,6 +26,13 @@ router.get('/test', (req, res) => res.json({msg: "User Works"}));
 // @access      Public
 
 router.post('/register', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({  email: req.body.email }).then(user => {
       if(user) {
         return res.status(400).json({email: 'Email already exists'});
@@ -34,7 +47,8 @@ router.post('/register', (req, res) => {
           email: req.body.email,
           zipcode: req.body.zipcode,
           avatar,
-          password: req.body.password
+          password: req.body.password,
+
         });
 
         //Hash the password
@@ -56,6 +70,14 @@ router.post('/register', (req, res) => {
 //@acces Public
 
 router.post('/login', (req, res) => {
+
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
@@ -65,7 +87,8 @@ router.post('/login', (req, res) => {
   .then(user => {
     // Check for user
     if(!user) {
-      return res.status(404).json({email: 'User Email not found'})
+      errors.email = 'User not found';
+      return res.status(404).json(errors)
     }
 
     // Check password
@@ -83,7 +106,8 @@ router.post('/login', (req, res) => {
           });
         });
       } else {
-        return res.status(400).json({password: 'Incorrect Password'})
+        errors.password = 'Password incorrect';
+        return res.status(400).json(errors)
       }
     });
   })
@@ -94,6 +118,10 @@ router.post('/login', (req, res) => {
 // @access      Private
 //
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json(req.user);
+  res.json({
+    id: req.user.id,
+    name: req.user.id,
+    email: req.user.email
+  });
 });
 module.exports = router;
