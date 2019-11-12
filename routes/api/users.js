@@ -21,7 +21,7 @@ const User = require('../../models/User')
 router.get('/test', (req, res) => res.json({msg: "User Works"}));
 
 
-// @route       GET to api/users/register
+// @route       POST to api/users/register
 // @description Register user
 // @access      Public
 
@@ -45,7 +45,7 @@ router.post('/register', (req, res) => {
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
-          zipcode: req.body.zipcode,
+          // zipcode: req.body.zipcode,
           avatar,
           password: req.body.password,
 

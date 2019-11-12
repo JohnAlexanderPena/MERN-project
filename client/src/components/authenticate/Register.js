@@ -18,18 +18,31 @@ class Register extends Component{
 
   onSubmit = (e) => {
     e.preventDefault()
-
     const newUser = {
       name: this.state.name,
       email:this.state.email,
       password: this.state.password,
       password2: this.state.password2
-    }
-    console.log(newUser)
+    };
+
+    fetch('/api/users/register', {
+       method: 'POST',
+       headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+    },
+       body: JSON.stringify(newUser)
+    })
+    .then(res => res.json())
+    .then(resp => console.log(resp))
+    .catch(err => this.setState({
+      errors: err.response.data
+    }))
   }
 
 
   render() {
+    console.log(this.state)
     return(
       <div className="register">
         <div className="container">

@@ -9,7 +9,7 @@ module.exports  = function validateRegisterInput(data){
   data.email = !isEmpty(data.email) ? data.email : ''; //stringify email
   data.password = !isEmpty(data.password) ? data.password : ''; // stringify pwd.
   data.password2 = !isEmpty(data.password2) ? data.password2 : ''; // stringify pwd.
-  data.zipcode = !isEmpty(data.zipcode) ? data.zipcode : ''; // stringify zipcode
+  // data.zipcode = !isEmpty(data.z ipcode) ? data.zipcode : ''; // stringify zipcode
 
 
   if(!Validator.isLength(data.name, {min: 2, max: 30})) {
@@ -41,9 +41,9 @@ module.exports  = function validateRegisterInput(data){
     errors.password2 = 'Passwords must match'
   }
 
-  if (Validator.isEmpty(data.zipcode)) {
-    errors.zipcode = 'Zip Code field is required'
-  }
+  // if (Validator.isEmpty(data.zipcode)) {
+  //   errors.zipcode = 'Zip Code field is required'
+  // }
 
   return {
     errors,
