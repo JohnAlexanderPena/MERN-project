@@ -35,7 +35,8 @@ router.post('/register', (req, res) => {
 
   User.findOne({  email: req.body.email }).then(user => {
       if(user) {
-        return res.status(400).json({email: 'Email already exists'});
+        errors.email = 'Email already exists';
+        return res.status(400).json(errors);
       } else {
         const avatar = gravatar.url(req.body.email, {
           s: '200', // Size
@@ -56,9 +57,10 @@ router.post('/register', (req, res) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if(err) throw err;
             newUser.password = hash;
-            newUser.save()
+            newUser
+              .save()
               .then(user => res.json(user))
-              .catch(err => console.log(err));
+              .catch(error => console.log(error));
           })
         })
       }
