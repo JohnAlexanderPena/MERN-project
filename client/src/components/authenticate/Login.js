@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import { loginUser } from '../../actions/authActions'
 
 class Login extends Component{
 
   state = {
     email: '',
     password: '',
-  }
+    errors: {}
+  };
 
   onChange = (event) => {
     this.setState({
@@ -13,17 +18,32 @@ class Login extends Component{
     })
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {  //getting errrors from redux state if they exist
+    if(nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+    if(nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      })
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault()
 
-    const newUser = {
+    const userData = {
      email:this.state.email,
      password: this.state.password,
     }
-    console.log(newUser)
+    this.props.loginUser(userData)
   }
 
   render() {
+  const { errors } = this.state;
+
+  console.log(this.state)
+
     return(
       <div className="login">
         <div className="container">
@@ -35,22 +55,32 @@ class Login extends Component{
                 <div className="form-group">
                   <input
                   type="email"
-                  className="form-control form-control-lg"
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.email // will only appear and turn red IF errors.password2 exists in our state
+                  })}
                   placeholder="Email Address"
                   name="email"
                   onChange={this.onChange}
                   value={this.state.email}
                 />
+              {errors.email && (
+                <div className="invalid-feedback">{errors.email}</div>
+              )}
                 </div>
                 <div className="form-group">
                   <input
                   type="password"
-                  className="form-control form-control-lg"
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.password // will only appear and turn red IF errors.password2 exists in our state
+                  })}
                   placeholder="Password"
                   name="password"
                   onChange={this.onChange}
                   value={this.state.password}
                   />
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
                 </div>
                 <input
                 type="submit"
@@ -65,4 +95,15 @@ class Login extends Component{
   }
 }
 
-export default Login
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })(Login);
