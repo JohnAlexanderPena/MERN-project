@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import { loginUser } from '../../actions/authActions'
 import TextFieldGroup from '../common/TextFieldGroup'
 
@@ -50,7 +49,6 @@ class Login extends Component{
   render() {
   const { errors } = this.state;
 
-  console.log(this.state)
 
     return(
       <div className="login">
@@ -60,7 +58,6 @@ class Login extends Component{
               <h1 className="display-4 text-center">Log In</h1>
               <p className="lead text-center">Sign in to your WebDev Unlimited account</p>
               <form   onSubmit={this.onSubmit} >
-
                 <TextFieldGroup
                     placeholder="Email Address"
                     name="email"
