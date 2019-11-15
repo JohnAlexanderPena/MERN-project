@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
  const PrivateRoute = ({ component: Component, auth, ...rest}) => (
    <Route
      {...rest}
+     // Check if any user is logged in. If not then redirect back to Login page else render proper component
      render={props => auth.isAuthenticated === true ? (<Component {...props} />) : (<Redirect to="/login" /> )}
 
    />
