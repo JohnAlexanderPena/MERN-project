@@ -24,11 +24,11 @@ const SelectListGroup = ({
         'is-invalid': error // will only appear and turn red IF errors.password2 exists in our state
       })}
       name={name}
-      onChange={onChange}>
+      onChange={onChange}
+      value={value}
+      >
       {selectOptions}
       </select>
-      value={value}
-    />
     {info && <small className="form-text text-muted"></small>}
     {error && (<div className="invalid-feedback">{error}</div>)}
     </div>
