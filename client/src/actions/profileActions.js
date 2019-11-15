@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-import { GET_PROFILE, PROFILE_LOADING, GET_ERRORS, CLEAR_CURRENT_PROFILE } from './types';
+import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from './types';
 
 // if we find a profile with the endpoint it will receive the data
 export const getCurrentProfile = () => dispatch => {
