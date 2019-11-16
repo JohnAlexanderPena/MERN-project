@@ -5,7 +5,8 @@ import TextFieldGroup from '../common/TextFieldGroup'
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup'
 import InputGroup from '../common/InputGroup'
 import SelectListGroup from '../common/SelectListGroup'
-import {createProfile} from '../../actions/profileActions'
+import {createProfile, getCurrentProfile } from '../../actions/profileActions'
+import isEmpty from '../../validation/is-empty'
 
 import { connect } from 'react-redux'
 
@@ -29,10 +30,49 @@ class CreateProfile extends React.Component {
     errors: {}
   }
 
+  componentDidMount() {
+    this.props.getCurrentProfile();
+  }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     if(nextProps.errors) {
       this.setState({
         errors: nextProps.errors
+      })
+    }
+    if(nextProps.profile.profile) { // check for profile
+      const profile = nextProps.profile.profile //set varibale to access all fields
+
+      let skillsStr = profile.skills.join(','); // turn array back into string
+
+      //If profile field doesn't exist, make empty string
+      profile.company = !isEmpty(profile.company) ? profile.company : '';
+      profile.website = !isEmpty(profile.website) ? profile.website : '';
+      profile.location = !isEmpty(profile.location) ? profile.location : '';
+      profile.githubusername = !isEmpty(profile.githubusername) ? profile.githubusername : '';
+      profile.bio = !isEmpty(profile.bio) ? profile.bio : '';
+      profile.social = !isEmpty(profile.social) ? profile.social : {};
+      profile.twitter = !isEmpty(profile.social.twitter) ? profile.social.twitter : '';
+      profile.linkedin = !isEmpty(profile.social.linkedin) ? profile.social.linkedin : '';
+      profile.instagram = !isEmpty(profile.social.instagram) ? profile.social.instagram : '';
+      profile.facebook = !isEmpty(profile.social.facebook) ? profile.social.facebook : '';
+      profile.youtube = !isEmpty(profile.social.youtube) ? profile.social.youtube : '';
+
+      //Set component field state
+      this.setState({
+        handle: profile.handle,
+        company: profile.company,
+        website: profile.website,
+        location: profile.location,
+        status: profile.status,
+        skills: skillsStr,
+        githubusername: profile.githubusername,
+        bio: profile.bio,
+        twitter: profile.twitter,
+        facebook: profile.facebook,
+        linkedin: profile.linkedin,
+        youtube: profile.youtube,
+        instagram: profile.instagram,
       })
     }
   }
@@ -65,6 +105,7 @@ class CreateProfile extends React.Component {
   }
 
   render () {
+    console.log(this.state )
     //Select Options
     const options = [
       { label: '* Select Professional Status', value: '0'},
@@ -137,10 +178,7 @@ class CreateProfile extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="disply-4 text-center">Create Your Profile</h1>
-                <p className="lead text-center">
-                    Let's Get some Info to create your Profile!
-                </p>
+              <h1 className="disply-4 text-center">Edit Profile</h1>
                 <form onSubmit={this.onSubmit}>
                 <small className="d-block pb-3">* = required fields</small>
                   <TextFieldGroup
@@ -230,7 +268,9 @@ class CreateProfile extends React.Component {
 
 CreateProfile.propTypes = {
   profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -239,4 +279,4 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps, { createProfile })(withRouter(CreateProfile));
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(withRouter(CreateProfile));
