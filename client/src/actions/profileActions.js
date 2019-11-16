@@ -13,31 +13,13 @@ dispatch({
   type: GET_PROFILE,
   payload: res.data
 }))
-.catch(err =>
-  dispatch({
-    type: GET_PROFILE,
-    payload: {}
-  })
-)
-
+  .catch(err =>
+    dispatch({
+      type: GET_PROFILE,
+      payload: {}
+    })
+  )
 }
-
-
-// export const createProfile = (profileData, history) => dispatch => {
-//   debugger;
-//
-// axios.post('/api/profile', profileData)
-// .then(res => history.push('/dashboard'))
-// .catch(err =>
-//
-//   dispatch({
-//     type: GET_ERRORS,
-//     payload: err
-//   })
-// )
-//
-// }
-
 
 // Create Profile
 export const createProfile = (profileData, history) => dispatch => {
@@ -80,6 +62,44 @@ export const clearCurrentProfile = () => {
   return {
     type: CLEAR_CURRENT_PROFILE
   }
+}
+
+//Add Experience
+//A
+// export const addExperience = (expData, history) => dispatch => {
+//
+// axios.post('/api/profile/experience', expData)
+//   .then(res => history.push('./dashboard'))
+//   .catch(err =>
+//     dispatch({
+//       type: GET_ERRORS,
+//       payload: err.response.data
+//     })
+//   )
+// }
+export const addExperience = (expData, history) => dispatch => {
+  fetch('/api/profile/experience', {
+     method: 'POST',
+     headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('jwtToken')
+  },
+     body: JSON.stringify(expData)
+  })
+  .then(res => {
+    if(res.status !== 200)
+    {
+      res.json().then(resp => {
+        dispatch({
+            type: GET_ERRORS,
+            payload: resp
+          })
+        })
+      } else {
+        res.json().then(resp => history.push('/dashboard'))
+      }
+  })
 }
 
 //Delete profile and Account
