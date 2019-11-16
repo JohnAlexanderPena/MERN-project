@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS } from './types';
+import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS, SET_CURRENT_USER } from './types';
 
 // if we find a profile with the endpoint it will receive the data
 export const getCurrentProfile = () => dispatch => {
@@ -79,5 +79,33 @@ export const setProfileLoading = () => {
 export const clearCurrentProfile = () => {
   return {
     type: CLEAR_CURRENT_PROFILE
+  }
+}
+
+//Delete profile and Account
+export const deleteAccount = () => dispatch => {
+  if(window.confirm('Are you sure? This CAN NOT BE UNDONE')) {
+     fetch('/api/profile', {
+    method: 'delete',
+    headers: {
+      'Authorization': localStorage.getItem('jwtToken')
+    }
+  }).then(res => {
+    if(res.status !== 200)
+    {
+      res.json().then(resp => {
+        dispatch({
+            type: GET_ERRORS,
+            payload: resp
+          })
+        })
+      } else {
+        res.json().then(resp =>
+        dispatch({
+          type: SET_CURRENT_USER,
+          payload: {}
+        }))
+      }
+  })
   }
 }
