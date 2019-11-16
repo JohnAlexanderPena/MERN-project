@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
           <div>
               <p className="lead text-muted"> Welcome {user.name }</p>
               <p>You don't have a profile yet! lease add some info</p>
-              <Link to='/create-profile' className="btn btn-info btn-lg">Create Profile</Link>
+              <Link to='/create-profile' className="btn btn-dark btn-lg">Create Profile</Link>
           </div>
         )
       }

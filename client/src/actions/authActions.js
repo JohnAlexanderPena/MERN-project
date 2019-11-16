@@ -15,7 +15,7 @@ export const registerUser = (userData, history) => dispatch => {
      body: JSON.stringify(userData)
   })
   .then(res => {
-    if(res.status === 400)
+    if(res.status !== 200)
     {
       res.json().then(resp => {
         dispatch({
@@ -39,7 +39,7 @@ export const loginUser = userData => dispatch => {
   },
      body: JSON.stringify(userData)
   }).then( res => {
-    if(res.status === 400 || res.status === 404)
+    if(res.status !== 200)
     {
       res.json().then(resp => {
         dispatch({

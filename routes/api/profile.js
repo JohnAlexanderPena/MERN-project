@@ -125,9 +125,9 @@ router.post('/', passport.authenticate('jwt', { session: false}), (req, res) => 
     profileFields.skills = req.body.skills.split(',');
   }
 
-  if(typeof req.body.workouts !== 'undefined') {
-    profileFields.workouts = req.body.workouts.split(',');
-  }
+  // if(typeof req.body.workouts !== 'undefined') {
+  //   profileFields.workouts = req.body.workouts.split(',');
+  // }
 
   // Social
   profileFields.social = {};

@@ -1,9 +1,11 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import TextFieldGroup from '../common/TextFieldGroup'
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup'
 import InputGroup from '../common/InputGroup'
 import SelectListGroup from '../common/SelectListGroup'
+import {createProfile} from '../../actions/profileActions'
 
 import { connect } from 'react-redux'
 
@@ -27,6 +29,14 @@ class CreateProfile extends React.Component {
     errors: {}
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if(nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      })
+    }
+  }
+
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -35,7 +45,25 @@ class CreateProfile extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+
+    const profileData = {
+      handle: this.state.handle,
+      company: this.state.company,
+      website: this.state.website,
+      location: this.state.location,
+      status: this.state.status,
+      skills: this.state.skills,
+      githubusername: this.state.githubusername,
+      bio: this.state.bio,
+      twitter: this.state.twitter,
+      facebook: this.state.facebook,
+      linkedin: this.state.linkedin,
+      youtube: this.state.youtube,
+      instagram: this.state.instagram,
+    }
+    this.props.createProfile(profileData, this.props.history)
   }
+
   render () {
     //Select Options
     const options = [
@@ -173,15 +201,16 @@ class CreateProfile extends React.Component {
                         info="Enter githubusername if you want latest repos"
                         />
                       <TextAreaFieldGroup
-                        placeholder="Enter a short bio."
+                        placeholder="Enter a short bio"
                         name="bio"
                         value={this.state.bio}
                         onChange={this.onChange}
                         error={errors.bio}
                         info="Tell use something about yourself"
                         />
+
                       <div className="mb-3">
-                        <button onClick={() => {this.setState(prevState => ({
+                        <button type="button" onClick={() => {this.setState(prevState => ({
                             displaySocialInputs: !prevState.displaySocialInputs
                           }))}} className="btn btn-light">
                           Add Social Media Links
@@ -206,8 +235,8 @@ CreateProfile.propTypes = {
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  errors: state.errors,
+  errors: state.errors, //listening for errors state
 })
 
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(mapStateToProps, { createProfile })(withRouter(CreateProfile));

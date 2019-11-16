@@ -8,7 +8,7 @@ module.exports  = function validateLoginInput(data){
   data.handle = !isEmpty(data.handle) ? data.handle : ''; //set to empty string if null
   data.status = !isEmpty(data.status) ? data.status : ''; // set to empty status if null.
   data.skills = !isEmpty(data.skills) ? data.skills : ''; // set to empty skills if null.
-  data.workouts = !isEmpty(data.workouts) ? data.workouts : ''; //set to empty workouts if null
+  // data.workouts = !isEmpty(data.workouts) ? data.workouts : ''; //set to empty workouts if null
   if (!Validator.isLength(data.handle, { min: 2, max: 40})) {
     errors.handle = 'Handle needs to be between 2 and 40 characters'
   }
@@ -25,9 +25,9 @@ module.exports  = function validateLoginInput(data){
     errors.skills = 'Skills field is required'
   }
 
-  if (Validator.isEmpty(data.workouts)) {
-    errors.workouts = 'Workout field is required'
-  }
+  // if (Validator.isEmpty(data.workouts)) {
+  //   errors.workouts = 'Workout field is required'
+  // }
 
   if(!isEmpty(data.website)){ // if website is not empty
     if(!Validator.isURL(data.website)) { // validate the URL
