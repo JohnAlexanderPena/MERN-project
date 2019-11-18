@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS, SET_CURRENT_USER } from './types';
+import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRORS, SET_CURRENT_USER, GET_PROFILES } from './types';
 
 // if we find a profile with the endpoint it will receive the data
 export const getCurrentProfile = () => dispatch => {
@@ -64,19 +64,6 @@ export const clearCurrentProfile = () => {
   }
 }
 
-//Add Experience
-//A
-// export const addExperience = (expData, history) => dispatch => {
-//
-// axios.post('/api/profile/experience', expData)
-//   .then(res => history.push('./dashboard'))
-//   .catch(err =>
-//     dispatch({
-//       type: GET_ERRORS,
-//       payload: err.response.data
-//     })
-//   )
-// }
 export const addExperience = (expData, history) => dispatch => {
   fetch('/api/profile/experience', {
      method: 'POST',
@@ -101,6 +88,110 @@ export const addExperience = (expData, history) => dispatch => {
       }
   })
 }
+
+//Add education
+export const addEducation = (eduData, history) => dispatch => {
+  fetch('/api/profile/education', {
+     method: 'POST',
+     headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('jwtToken')
+  },
+     body: JSON.stringify(eduData)
+  })
+  .then(res => {
+    if(res.status !== 200)
+    {
+      res.json().then(resp => {
+        dispatch({
+            type: GET_ERRORS,
+            payload: resp
+          })
+        })
+      } else {
+        res.json().then(resp => history.push('/dashboard'))
+      }
+  })
+}
+
+//Delete experience
+export const deleteExperience = (id) => dispatch => {
+  fetch(`/api/profile/experience/${id}`, {
+     method: 'DELETE',
+     headers: {
+        'Authorization': localStorage.getItem('jwtToken')
+  },
+     body: JSON.stringify(id)
+  })
+  .then(res => {
+    if(res.status !== 200)
+    {
+      res.json().then(resp => {
+        dispatch({
+            type: GET_ERRORS,
+            payload: resp
+          })
+        })
+      } else {
+        res.json().then(resp =>
+          dispatch({
+            type: GET_PROFILE,
+            payload: resp
+          })
+        )
+      }
+  })
+}
+
+
+//Delete Education
+export const deleteEducation = (id) => dispatch => {
+  fetch(`/api/profile/education/${id}`, {
+     method: 'DELETE',
+     headers: {
+        'Authorization': localStorage.getItem('jwtToken')
+  },
+     body: JSON.stringify(id)
+  })
+  .then(res => {
+    if(res.status !== 200)
+    {
+      res.json().then(resp => {
+        dispatch({
+            type: GET_ERRORS,
+            payload: resp
+          })
+        })
+      } else {
+        res.json().then(resp =>
+          dispatch({
+            type: GET_PROFILE,
+            payload: resp
+          })
+        )
+      }
+  })
+}
+
+//Get all Profiles
+export const getProfiles = () => dispatch => {
+dispatch(setProfileLoading()); // start loading spinner
+
+axios.get('/api/profile/all')
+.then(res =>
+dispatch({
+  type: GET_PROFILES,
+  payload: res.data
+}))
+  .catch(err =>
+    dispatch({
+      type: GET_PROFILES,
+      payload: null
+    })
+  )
+}
+
 
 //Delete profile and Account
 export const deleteAccount = () => dispatch => {
