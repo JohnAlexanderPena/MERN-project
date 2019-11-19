@@ -38,7 +38,7 @@ const skills = profile.skills.map((skill, index) => {
   }
 }
 
-// ProfileAbout.propTypes = {
-//   profile:
-// }
+ProfileAbout.propTypes = {
+  profile: PropTypes.object.isRequired
+}
 export default ProfileAbout;
