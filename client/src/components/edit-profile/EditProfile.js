@@ -82,10 +82,16 @@ class CreateProfile extends React.Component {
       [event.target.name]: event.target.value
     })
   }
+  //
+  // handleFileChange = (event) => {
+  //   this.setState({
+  //     filedSelected: event.target.files[0]
+  //   })
+  // }
+
 
   onSubmit = (event) => {
     event.preventDefault()
-
     const profileData = {
       handle: this.state.handle,
       company: this.state.company,
@@ -101,7 +107,7 @@ class CreateProfile extends React.Component {
       youtube: this.state.youtube,
       instagram: this.state.instagram,
     }
-    this.props.createProfile(profileData, this.props.history)
+    this.props.createProfile(profileData, this.props.histor)
   }
 
   render () {
@@ -182,8 +188,8 @@ class CreateProfile extends React.Component {
                 Go Back
               </Link>
               <h1 className="disply-4 text-center">Edit Profile</h1>
+              <small className="d-block pb-3">* = required fields</small>
                 <form onSubmit={this.onSubmit}>
-                <small className="d-block pb-3">* = required fields</small>
                   <TextFieldGroup
                     placeholder="* Profile Handle"
                     name="handle"
@@ -259,7 +265,7 @@ class CreateProfile extends React.Component {
                         <span className="text-muted">Optional</span>
                       </div>
                       {socialInputs}
-                      <input type="submit" value="Submit" className="btn btn-info btn-block mt-4"/>
+                      <input type="submit" value="Submit" className="btn btn-dark btn-block mt-4"/>
                 </form>
             </div>
           </div>

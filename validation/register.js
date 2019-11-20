@@ -9,6 +9,8 @@ module.exports  = function validateRegisterInput(data){
   data.email = !isEmpty(data.email) ? data.email : ''; //stringify email
   data.password = !isEmpty(data.password) ? data.password : ''; // stringify pwd.
   data.password2 = !isEmpty(data.password2) ? data.password2 : ''; // stringify pwd.
+  data.image = !isEmpty(data.image) ? data.image : ''; // stringify pwd.
+
   // data.zipcode = !isEmpty(data.z ipcode) ? data.zipcode : ''; // stringify zipcode
 
 

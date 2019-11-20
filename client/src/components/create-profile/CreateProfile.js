@@ -63,7 +63,6 @@ class CreateProfile extends React.Component {
     }
     this.props.createProfile(profileData, this.props.history)
   }
-
   render () {
     //Select Options
     const options = [
@@ -151,6 +150,7 @@ class CreateProfile extends React.Component {
                     error={errors.handle}
                     info="Enter a unique handle for your profile URL. Full name, nickname, etc"
                     />
+
                   <SelectListGroup
                       placeholder="Status"
                       name="status"
