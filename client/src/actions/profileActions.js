@@ -39,11 +39,11 @@ dispatch({
 }
 
 // Create Profile
-export const createProfile = (profileData, history, image) => dispatch => {
+export const createProfile = (profileData, history) => dispatch => {
   // const auth = localStorage.getItem('jwtToken')
 
-  const fd = new FormData();
-  fd.append('image', image, image.name)
+  // const fd = new FormData();
+  // fd.append('image', image, image.name)
 
   fetch('/api/profile', {
      method: 'POST',
@@ -52,7 +52,7 @@ export const createProfile = (profileData, history, image) => dispatch => {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('jwtToken')
   },
-     body: JSON.stringify(profileData, fd)
+     body: JSON.stringify(profileData)
   })
   .then(res => {
     console.log(res)

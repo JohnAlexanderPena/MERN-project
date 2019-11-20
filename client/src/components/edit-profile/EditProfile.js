@@ -34,7 +34,7 @@ class CreateProfile extends React.Component {
     this.props.getCurrentProfile();
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if(nextProps.errors) {
       this.setState({
         errors: nextProps.errors
@@ -107,11 +107,10 @@ class CreateProfile extends React.Component {
       youtube: this.state.youtube,
       instagram: this.state.instagram,
     }
-    this.props.createProfile(profileData, this.props.histor)
+    this.props.createProfile(profileData, this.props.history)
   }
 
   render () {
-    console.log(this.state )
     //Select Options
     const options = [
       { label: '* Select Professional Status', value: '0'},
