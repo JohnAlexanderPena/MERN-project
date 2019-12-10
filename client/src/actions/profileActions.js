@@ -21,7 +21,7 @@ dispatch({
   )
 }
 
-//Get specifin profile by Handle
+//Get specific profile by Handle
 export const getProfileByHandle = (handle) => dispatch => {
 dispatch(setProfileLoading());
 axios.get(`/api/profile/handle/${handle}`)

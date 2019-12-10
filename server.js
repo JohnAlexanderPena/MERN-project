@@ -26,7 +26,7 @@ useFindAndModify: false,
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err))
 
-  //Passport middleware
+//Passport middleware
 app.get(passport.initialize());
 
 // Passpor Config
