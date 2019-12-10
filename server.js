@@ -26,6 +26,15 @@ useFindAndModify: false,
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err))
 
+  // Server static assets if in production
+if(process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'))
+
+}
+
+
+
 //Passport middleware
 app.get(passport.initialize());
 
