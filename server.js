@@ -48,14 +48,17 @@ require('./config/passport')(passport)
 // app.get('/', (req, resp) => resp.send('Hello World'));
 
 // Use Routes
-app.use('/api/users', users);
-app.use('/api/profile', profile)
-app.use('/api/posts', posts)
+app.use('/api/users', cors(), users);
+app.use('/api/profile',cors(), profile)
+app.use('/api/posts',cors(), posts)
  //test
  //Handler for 404 requests
  app.use((req, res, next) => {
    res.status(404).send('We think you are lost')
  });
+
+
+ const cors = require('cors')
 
  //Handler for error 500
  app.use((err, req, res, next) => {
