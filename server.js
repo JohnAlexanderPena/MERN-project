@@ -17,9 +17,9 @@ app.use(bodyParser.json());
 if(process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('client/build'))
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  })
+  // app.get('*', (req, res) => {
+  //   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  // })
 }
 
 // catch 404 and forward to error handler
@@ -52,6 +52,16 @@ app.use('/api/users', users);
 app.use('/api/profile', profile)
 app.use('/api/posts', posts)
  //test
+ //Handler for 404 requests
+ app.use((req, res, next) => {
+   res.status(404).send('We think you are lost')
+ });
+
+ //Handler for error 500
+ app.use((err, req, res, next) => {
+   console.error(err.stack);
+   res.sendFile(path.join(__dirname, './public/index.html'));
+ })
 
 const PORT = process.env.PORT || 5000;
 
