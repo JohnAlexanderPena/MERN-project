@@ -20,7 +20,7 @@
     "common": "^0.2.5",
     "concurrently": "^5.0.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongo": "^0.1.0",
